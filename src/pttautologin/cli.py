@@ -3,12 +3,9 @@ from dataclasses import dataclass
 from dataclasses import field
 
 import PyPtt
-import typer
 from dotenv import find_dotenv
 from dotenv import load_dotenv
 from loguru import logger
-
-app = typer.Typer()
 
 
 @dataclass
@@ -59,13 +56,9 @@ def parse_accounts_from_env() -> list[Account]:
     return accounts
 
 
-@app.command()
 def main() -> None:
     load_dotenv(find_dotenv(), override=True)
 
     accounts = parse_accounts_from_env()
     for account in accounts:
-        try:
-            login_and_logout(account)
-        except Exception:
-            logger.error("An unexpected error occurred for account {}", account.username)
+        login_and_logout(account)
