@@ -35,7 +35,6 @@ def login_and_logout(account: Account) -> None:
     finally:
         if logged_in:
             client.logout()
-        client.close()
 
 
 def parse_accounts_from_env() -> list[Account]:
