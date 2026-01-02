@@ -18,21 +18,23 @@ class Account:
 
 def login_and_logout(account: Account) -> None:
     client = PyPtt.API()
+    logged_in = False
     try:
         client.login(
             ptt_id=account.username,
             ptt_pw=account.password,
             kick_other_session=False,
         )
+        logged_in = True
     except PyPtt.exceptions.LoginError as e:
         logger.error(f"Login error: {e}")
     except PyPtt.exceptions.LoginTooOften as e:
         logger.error(f"Login too often: {e}")
     except PyPtt.exceptions.WrongIDorPassword as e:
         logger.error(f"Wrong ID or password: {e}")
-
     finally:
-        client.logout()
+        if logged_in:
+            client.logout()
 
 
 def parse_accounts_from_env() -> list[Account]:
