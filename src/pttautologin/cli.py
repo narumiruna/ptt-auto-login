@@ -66,12 +66,12 @@ async def run() -> None:
 
     tasks = []
     for account in accounts:
-        tasks += [
+        tasks.append(
             asyncio.to_thread(
                 login_and_logout,
                 account,
             )
-        ]
+        )
     await asyncio.gather(*tasks)
 
     # Allow pending async tasks to complete gracefully
