@@ -1,0 +1,23 @@
+name: Cron
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # At 07:00 every day
+
+jobs:
+  login-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Python
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          uv sync
+      - name: Run login cron
+        env:
+          PTT_ACCOUNTS: ${{ secrets.PTT_ACCOUNTS }}
+        run: |
+          uv run pttautologin
