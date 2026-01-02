@@ -35,6 +35,7 @@ def login_and_logout(account: Account) -> None:
     finally:
         if logged_in:
             client.logout()
+        client.close()
 
 
 def parse_accounts_from_env() -> list[Account]:
@@ -72,6 +73,9 @@ async def run() -> None:
             )
         ]
     await asyncio.gather(*tasks)
+
+    # Allow pending async tasks to complete gracefully
+    await asyncio.sleep(0.1)
 
 
 def main() -> None:
