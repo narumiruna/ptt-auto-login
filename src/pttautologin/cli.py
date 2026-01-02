@@ -74,9 +74,6 @@ async def run() -> None:
         )
     await asyncio.gather(*tasks)
 
-    # Allow pending async tasks to complete gracefully
-    await asyncio.sleep(0.1)
-
 
 def main() -> None:
     nest_asyncio.apply()
