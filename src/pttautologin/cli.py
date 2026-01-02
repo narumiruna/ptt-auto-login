@@ -1,4 +1,5 @@
 import os
+from dataclasses import dataclass
 
 import PyPtt
 import typer
@@ -9,12 +10,18 @@ from loguru import logger
 app = typer.Typer()
 
 
-def login_and_logout(ptt_id: str, ptt_pw: str) -> None:
+@dataclass
+class Account:
+    username: str
+    password: str
+
+
+def login_and_logout(account: Account) -> None:
     client = PyPtt.API()
     try:
         client.login(
-            ptt_id=ptt_id,
-            ptt_pw=ptt_pw,
+            ptt_id=account.username,
+            ptt_pw=account.password,
             kick_other_session=False,
         )
     except PyPtt.exceptions.LoginError as e:
@@ -28,6 +35,24 @@ def login_and_logout(ptt_id: str, ptt_pw: str) -> None:
         client.logout()
 
 
+def parse_accounts_from_env() -> list[Account]:
+    raw = os.getenv("PTT_ACCOUNTS", "").strip()
+    if not raw:
+        logger.error("No PTT accounts found in environment variable 'PTT_ACCOUNTS'.")
+        return []
+
+    accounts = []
+
+    for entry in raw.split(";"):
+        try:
+            username, password = entry.split(",")
+            accounts.append(Account(username=username.strip(), password=password.strip()))
+        except ValueError:
+            logger.error(f"Invalid account format: {entry}. Expected format is 'account,password'.")
+
+    return accounts
+
+
 @app.command()
 def main() -> None:
     load_dotenv(
@@ -35,13 +60,6 @@ def main() -> None:
         override=True,
     )
 
-    ptt_id = os.getenv("PTT_ACCOUNT")
-    if ptt_id is None:
-        logger.error("PTT_ACCOUNT is not set.")
-        return
-    ptt_pw = os.getenv("PTT_PASSWORD")
-    if ptt_pw is None:
-        logger.error("PTT_PASSWORD is not set.")
-        return
-
-    login_and_logout(ptt_id, ptt_pw)
+    accounts = parse_accounts_from_env()
+    for account in accounts:
+        login_and_logout(account)
