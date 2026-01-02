@@ -65,4 +65,7 @@ def main() -> None:
 
     accounts = parse_accounts_from_env()
     for account in accounts:
-        login_and_logout(account)
+        try:
+            login_and_logout(account)
+        except Exception:
+            logger.error("An unexpected error occurred for account {}", account.username)
