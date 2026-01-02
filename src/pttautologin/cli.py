@@ -1,7 +1,9 @@
+import asyncio
 import os
 from dataclasses import dataclass
 from dataclasses import field
 
+import nest_asyncio
 import PyPtt
 from dotenv import find_dotenv
 from dotenv import load_dotenv
@@ -33,6 +35,7 @@ def login_and_logout(account: Account) -> None:
     finally:
         if logged_in:
             client.logout()
+        client.close()
 
 
 def parse_accounts_from_env() -> list[Account]:
@@ -56,9 +59,22 @@ def parse_accounts_from_env() -> list[Account]:
     return accounts
 
 
-def main() -> None:
+async def run() -> None:
     load_dotenv(find_dotenv(), override=True)
 
     accounts = parse_accounts_from_env()
+
+    tasks = []
     for account in accounts:
-        login_and_logout(account)
+        tasks.append(
+            asyncio.to_thread(
+                login_and_logout,
+                account,
+            )
+        )
+    await asyncio.gather(*tasks)
+
+
+def main() -> None:
+    nest_asyncio.apply()
+    asyncio.run(run())
