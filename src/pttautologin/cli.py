@@ -61,7 +61,7 @@ def parse_accounts_from_env() -> list[Account]:
 @app.command()
 def main() -> None:
     load_dotenv(
-        find_dotenv(raise_error_if_not_found=True),
+        find_dotenv(raise_error_if_not_found=False),
         override=True,
     )
 
