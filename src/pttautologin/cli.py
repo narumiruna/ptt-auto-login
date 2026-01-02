@@ -1,5 +1,6 @@
 import os
 from dataclasses import dataclass
+from dataclasses import field
 
 import PyPtt
 import typer
@@ -13,7 +14,7 @@ app = typer.Typer()
 @dataclass
 class Account:
     username: str
-    password: str
+    password: str = field(repr=False)
 
 
 def login_and_logout(account: Account) -> None:
