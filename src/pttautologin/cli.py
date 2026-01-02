@@ -27,12 +27,12 @@ def login_and_logout(account: Account) -> None:
             kick_other_session=False,
         )
         logged_in = True
-    except PyPtt.exceptions.LoginError as e:
-        logger.error(f"Login error: {e}")
-    except PyPtt.exceptions.LoginTooOften as e:
-        logger.error(f"Login too often: {e}")
-    except PyPtt.exceptions.WrongIDorPassword as e:
-        logger.error(f"Wrong ID or password: {e}")
+    except PyPtt.exceptions.LoginError:
+        logger.error("Login error")
+    except PyPtt.exceptions.LoginTooOften:
+        logger.error("Login too often")
+    except PyPtt.exceptions.WrongIDorPassword:
+        logger.error("Wrong ID or password")
     finally:
         if logged_in:
             client.logout()
