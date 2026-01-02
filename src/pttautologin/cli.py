@@ -50,7 +50,10 @@ def parse_accounts_from_env() -> list[Account]:
             username, password = entry.split(",")
             accounts.append(Account(username=username.strip(), password=password.strip()))
         except ValueError:
-            logger.error(f"Invalid account format: {entry}. Expected format is 'account,password'.")
+            logger.error(
+                "Invalid account format in PTT_ACCOUNTS. Expected format is 'account,password'. "
+                "The malformed entry has been skipped."
+            )
 
     return accounts
 
