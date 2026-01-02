@@ -1,14 +1,19 @@
 [project]
-name = "pythontemplate"
+name = "pttautologin"
 version = "0.0.0"
 description = ""
 readme = "README.md"
 authors = [{ name = "narumi", email = "toucans-cutouts0f@icloud.com" }]
 requires-python = ">=3.12"
-dependencies = ["loguru>=0.7.3", "typer>=0.20.0"]
+dependencies = [
+    "loguru>=0.7.3",
+    "pyptt>=2.0.2",
+    "python-dotenv>=1.2.1",
+    "typer>=0.20.0",
+]
 
 [project.scripts]
-pythontemplate = "pythontemplate.cli:app"
+pttautologin = "pttautologin.cli:app"
 
 [build-system]
 requires = ["uv_build>=0.8.17,<0.9.0"]
@@ -42,6 +47,7 @@ force-single-line = true
 
 [tool.ty.rules]
 unresolved-import = "ignore"
+unresolved-attribute = "ignore"
 
 [tool.pytest.ini_options]
 filterwarnings = ["ignore::DeprecationWarning"]
