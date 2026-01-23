@@ -1,11 +1,11 @@
 [project]
-name = "pttautologin"
-version = "0.0.0"
-description = ""
-readme = "README.md"
+name            = "pttautologin"
+version         = "0.0.0"
+description     = ""
+readme          = "README.md"
 requires-python = ">=3.12"
-authors = [{ name = "narumi", email = "toucans-cutouts0f@icloud.com" }]
-dependencies = [
+authors         = [{ name = "narumi", email = "toucans-cutouts0f@icloud.com" }]
+dependencies    = [
   "loguru>=0.7.3",
   "nest-asyncio>=1.6.0",
   "pyptt>=2.0.2",
@@ -15,45 +15,46 @@ dependencies = [
 [project.scripts]
 pttautologin = "pttautologin.cli:main"
 
-[build-system]
-requires = ["uv_build>=0.8.17,<0.9.0"]
-build-backend = "uv_build"
-
 [dependency-groups]
 dev = ["pytest>=8.3.3", "pytest-cov>=6.0.0", "ruff>=0.7.3", "ty>=0.0.8"]
 
+[build-system]
+requires      = ["uv_build>=0.8.17,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.bumpversion]
+current_version  = "0.0.0"
+tag              = true
+commit           = true
+pre_commit_hooks = ["uv lock", "git add uv.lock"]
+
+[tool.pytest]
+filterwarnings = ["ignore::DeprecationWarning"]
+
 [tool.ruff]
-exclude = ["build"]
+exclude     = ["build"]
 line-length = 120
 
 [tool.ruff.lint]
 select = [
-  "B",  # flake8-bugbear
-  "C",  # flake8-comprehensions
-  "E",  # pycodestyle errors
-  "F",  # pyflakes
-  "I",  # isort
-  "N",  # pep8-naming
-  "SIM",  # flake8-simplify
-  "UP",  # pyupgrade
-  "W",  # pycodestyle warnings
+  "B",      # flake8-bugbear
+  "C",      # flake8-comprehensions
+  "E",      # pycodestyle errors
+  "F",      # pyflakes
+  "I",      # isort
+  "N",      # pep8-naming
+  "SIM",    # flake8-simplify
+  "UP",     # pyupgrade
+  "W",      # pycodestyle warnings
 ]
-
-[tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401", "F403"]
 
 [tool.ruff.lint.isort]
 force-single-line = true
 
+[tool.tombi.format.rules]
+key-value-equals-sign-alignment = true
+trailing-comment-alignment      = true
+
 [tool.ty.rules]
-unresolved-import = "ignore"
+unresolved-import    = "ignore"
 unresolved-attribute = "ignore"
-
-[tool.pytest.ini_options]
-filterwarnings = ["ignore::DeprecationWarning"]
-
-[tool.bumpversion]
-current_version = "0.0.0"
-tag = true
-commit = true
-pre_commit_hooks = ["uv lock", "git add uv.lock"]
