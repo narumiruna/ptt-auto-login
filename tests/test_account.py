@@ -1,8 +1,8 @@
 import pytest
 from pytest import MonkeyPatch
 
-from pttautologin.cli import Account
-from pttautologin.cli import parse_accounts_from_env
+from pttautologin.account import Account
+from pttautologin.account import parse_accounts_from_env
 
 
 @pytest.mark.parametrize(

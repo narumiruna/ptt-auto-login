@@ -1,7 +1,4 @@
 import asyncio
-import os
-from dataclasses import dataclass
-from dataclasses import field
 
 import nest_asyncio
 import PyPtt
@@ -9,11 +6,8 @@ from dotenv import find_dotenv
 from dotenv import load_dotenv
 from loguru import logger
 
-
-@dataclass
-class Account:
-    username: str
-    password: str = field(repr=False)
+from .account import Account
+from .account import parse_accounts_from_env
 
 
 def login_and_logout(account: Account) -> None:
@@ -35,27 +29,6 @@ def login_and_logout(account: Account) -> None:
     finally:
         if logged_in:
             client.logout()
-
-
-def parse_accounts_from_env() -> list[Account]:
-    raw = os.getenv("PTT_ACCOUNTS", "").strip()
-    if not raw:
-        logger.error("No PTT accounts found in environment variable 'PTT_ACCOUNTS'.")
-        return []
-
-    accounts = []
-
-    for entry in raw.split(";"):
-        try:
-            username, password = entry.split(",")
-            accounts.append(Account(username=username.strip(), password=password.strip()))
-        except ValueError:
-            logger.error(
-                "Invalid account format in PTT_ACCOUNTS. Expected format is 'account,password'. "
-                "The malformed entry has been skipped."
-            )
-
-    return accounts
 
 
 async def run() -> None:
