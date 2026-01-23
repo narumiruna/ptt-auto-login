@@ -35,15 +35,18 @@ async def run() -> None:
     load_dotenv(find_dotenv(), override=True)
 
     accounts = parse_accounts_from_env()
+    logger.info(f"Found {len(accounts)} accounts to process.")
 
-    tasks = [
-        asyncio.to_thread(
-            login_and_logout,
-            account,
-        )
-        for account in accounts
-    ]
-    await asyncio.gather(*tasks)
+    logger.info("Starting login and logout tasks...")
+    await asyncio.gather(
+        *[
+            asyncio.to_thread(
+                login_and_logout,
+                account,
+            )
+            for account in accounts
+        ]
+    )
 
 
 def main() -> None:
