@@ -63,14 +63,13 @@ async def run() -> None:
 
     accounts = parse_accounts_from_env()
 
-    tasks = []
-    for account in accounts:
-        tasks.append(
-            asyncio.to_thread(
-                login_and_logout,
-                account,
-            )
+    tasks = [
+        asyncio.to_thread(
+            login_and_logout,
+            account,
         )
+        for account in accounts
+    ]
     await asyncio.gather(*tasks)
 
 
