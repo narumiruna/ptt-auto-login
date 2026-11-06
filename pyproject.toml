@@ -75,5 +75,5 @@ key-value-equals-sign-alignment = true
 trailing-comment-alignment      = true
 
 [tool.ty.rules]
-unresolved-import    = "ignore"
+import-not-found    = "ignore"
 unresolved-attribute = "ignore"
